@@ -12,9 +12,8 @@ spring:
       path: /h2
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
-#        default_schema: list
     database-platform: org.hibernate.dialect.PostgreSQLDialect
