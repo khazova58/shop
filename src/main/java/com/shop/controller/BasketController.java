@@ -1,34 +1,32 @@
 package com.shop.controller;
 
+import com.shop.model.dto.BasketDto;
+import com.shop.service.BasketService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Контроллер для работы с Корзиной покупок
+ * Контроллер для работы с Корзиной
  */
 @RestController
 @RequestMapping(value = "api/v1/baskets")
 @Tag(name = "Корзина")
+@RequiredArgsConstructor
 public class BasketController {
 
+    private final BasketService service;
+
     @PostMapping
-    @Operation(summary = "Положить товар в корзину")
-    public void newBasket() {
-    }
-
-    @GetMapping
-    @Operation(summary = "Отобразить все товары из корзины")
-    public void getProducts() {
-    }
-
-    @PutMapping
-    @Operation(summary = "Редактировать количество товара в корзине")
-    public void updateCountProduct() {
+    @Operation(summary = "Создать корзину для пользователя")
+    public BasketDto newBasket() {
+        return service.newBasket();
     }
 
     @DeleteMapping
-    @Operation(summary = "Удалить товар из корзины")
-    public void deleteProduct() {
+    @Operation(summary = "Удалить корзину пользователя")
+    public void deleteBasket(@RequestParam String id) {
+        service.deleteBasket(id);
     }
 }
