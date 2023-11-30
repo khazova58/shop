@@ -5,6 +5,7 @@ import com.shop.service.BasketService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -20,6 +21,7 @@ public class BasketController {
 
     @PostMapping
     @Operation(summary = "Создать корзину для пользователя")
+    @ResponseStatus(HttpStatus.CREATED)
     public BasketDto newBasket() {
         return service.newBasket();
     }

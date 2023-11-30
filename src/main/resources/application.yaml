@@ -12,8 +12,9 @@ spring:
       path: /h2
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         show_sql: true
+        default_schema: shopping
     database-platform: org.hibernate.dialect.PostgreSQLDialect

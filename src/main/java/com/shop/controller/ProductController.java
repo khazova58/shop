@@ -1,10 +1,11 @@
 package com.shop.controller;
 
 import com.shop.model.dto.ProductDto;
-import com.shop.service.ProductService;
+import com.shop.service.contract.ProductContract;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +19,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductService service;
+    private final ProductContract service;
 
     @PostMapping
     @Operation(summary = "Добавить новый товар")
+    @ResponseStatus(HttpStatus.CREATED)
     public String newProduct(@RequestBody ProductDto dto) {
         return service.newProduct(dto);
     }
@@ -33,7 +35,7 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    @Operation(summary = "Список всех товаров")
+    @Operation(summary = "Все товары")
     public List<ProductDto> allProducts() {
         return service.allProducts();
     }

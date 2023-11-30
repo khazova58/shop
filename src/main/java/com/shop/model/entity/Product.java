@@ -1,13 +1,16 @@
 package com.shop.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
- * Покупка
+ * Товар
  */
 @Entity
-@Table(name = "product", schema = "shopping")
+@Table(name = "product")
 @Getter
 @Setter
 @NoArgsConstructor

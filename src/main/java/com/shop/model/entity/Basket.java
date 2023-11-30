@@ -5,12 +5,14 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Корзина покупок
  */
 @Entity
-@Table(name = "basket", schema = "shopping")
+@Table(name = "basket")
 @Data
 public class Basket {
     /**
@@ -27,4 +29,10 @@ public class Basket {
     @Column(name = "date_create")
     @CreationTimestamp
     private LocalDateTime dateCreation;
+
+    @ManyToMany
+    @JoinTable(name = "basket_product",
+            joinColumns = @JoinColumn(name = "basket_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> products = new ArrayList<>();
 }

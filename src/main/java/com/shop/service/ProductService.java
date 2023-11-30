@@ -1,18 +1,61 @@
 package com.shop.service;
 
+import com.shop.mapper.ProjectMapper;
 import com.shop.model.dto.ProductDto;
+import com.shop.model.entity.Product;
+import com.shop.repository.ProductRepository;
+import com.shop.service.contract.ProductContract;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface ProductService {
+@Service
+@Transactional(readOnly = true)
+public class ProductService implements ProductContract {
 
-    String newProduct(ProductDto dto);
+    private final ProductRepository repository;
+    private final ProjectMapper mapper;
 
-    ProductDto getProduct(String id);
+    public ProductService(ProductRepository repository, ProjectMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
 
-    List<ProductDto> allProducts();
+    @Override
+    @Transactional
+    public String newProduct(ProductDto dto) {
+        Product entity = mapper.mapToEntity(dto);
+        Product saveProduct = repository.save(entity);
+        return saveProduct.getProductId();
+    }
 
-    ProductDto updateProduct(String id, ProductDto dto);
+    @Override
+    public ProductDto getProduct(String id) {
+        Product found = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));//TODO реализовать бизнес-ошибку
+        return mapper.mapToDto(found);
+    }
 
-    void deleteProduct(String id);
+    @Override
+    public List<ProductDto> allProducts() {
+        List<Product> products = repository.findAll();
+        return products.stream()
+                .map(mapper::mapToDto)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public ProductDto updateProduct(String id, ProductDto newProduct) {
+        Product foundProduct = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));//TODO реализовать бизнес-ошибку
+        Product updateEntity = mapper.updateProductByRequest(newProduct, foundProduct);
+        return mapper.mapToDto(updateEntity);
+    }
+
+    @Override
+    @Transactional
+    public void deleteProduct(String id) {
+        Product found = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));//TODO реализовать бизнес-ошибку
+        repository.delete(found);
+    }
 }
