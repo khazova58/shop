@@ -1,8 +1,10 @@
 package com.shop.controller;
 
 import com.shop.model.dto.ProductDto;
+import com.shop.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,34 +15,38 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/v1/products")
 @Tag(name = "Товар")
+@RequiredArgsConstructor
 public class ProductController {
+
+    private final ProductService service;
 
     @PostMapping
     @Operation(summary = "Добавить новый товар")
     public String newProduct(@RequestBody ProductDto dto) {
-        return null;
+        return service.newProduct(dto);
     }
 
     @GetMapping
     @Operation(summary = "Найти товар по id")
     public ProductDto getProduct(@RequestParam String id) {
-        return null;
+        return service.getProduct(id);
     }
 
     @GetMapping("/all")
     @Operation(summary = "Список всех товаров")
     public List<ProductDto> allProducts() {
-        return null;
+        return service.allProducts();
     }
 
     @PutMapping
     @Operation(summary = "Обновить товар с заданным id")
     public ProductDto updateProduct(@RequestParam String id, @RequestBody ProductDto dto) {
-        return null;
+        return service.updateProduct(id,dto);
     }
 
     @DeleteMapping
     @Operation(summary = "Удалить товар с заданным id")
     public void deleteProduct(@RequestParam String id) {
+        service.deleteProduct(id);
     }
 }
