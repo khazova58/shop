@@ -38,7 +38,6 @@ public class BasketProductService implements BasketProductContract {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ServiceException(BusinessError.PRODUCT_NOT_FOUND, productId));
         List<Product> list = basket.getProducts();
         list.add(product);
-        basket.setProducts(list);
         basketRepository.save(basket);
     }
 
