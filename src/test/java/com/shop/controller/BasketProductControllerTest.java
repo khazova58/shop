@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(BuyController.class)
-class BuyControllerTest {
+@WebMvcTest(BasketProductController.class)
+class BasketProductControllerTest {
 
     @MockBean
     private BasketProductService service;
@@ -33,10 +33,7 @@ class BuyControllerTest {
     void putProducts() throws Exception {
         Mockito.doNothing().when(service).putProduct("testBasketId", "testProductId");
 
-        mockMvc.perform(
-                        post("/api/v1/baskets/buy")
-                                .param("basketId", "testBasketId")
-                                .param("productId", "testProductId"))
+        mockMvc.perform(post("/api/v1/baskets/{basketId}/products/{productId}", "testBasketId", "testProductId"))
                 .andExpect(status().isCreated());
     }
 
@@ -46,9 +43,7 @@ class BuyControllerTest {
         String expected = "[{\"title\":\"Potato\",\"description\":\"red potato\",\"price\":35.5}]";
         Mockito.when(service.allProducts("testBasketId")).thenReturn(List.of(productDto));
 
-        MvcResult result = mockMvc.perform(
-                        get("/api/v1/baskets/buy")
-                                .param("basketId", "testBasketId"))
+        MvcResult result = mockMvc.perform(get("/api/v1/baskets/{basketId}/products", "testBasketId"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -60,10 +55,7 @@ class BuyControllerTest {
     void deleteProduct() throws Exception {
         Mockito.doNothing().when(service).deleteProduct("testBasketId", "testProductId");
 
-        mockMvc.perform(
-                        delete("/api/v1/baskets/buy")
-                                .param("basketId", "testBasketId")
-                                .param("productId", "testProductId"))
+        mockMvc.perform(delete("/api/v1/baskets/{basketId}/products/{productId}", "testBasketId", "testProductId"))
                 .andExpect(status().isNoContent());
     }
 }

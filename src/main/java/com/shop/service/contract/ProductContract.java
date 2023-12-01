@@ -1,12 +1,13 @@
 package com.shop.service.contract;
 
 import com.shop.model.dto.ProductDto;
+import com.shop.model.dto.ProductIdDto;
 
 import java.util.List;
 
 public interface ProductContract {
 
-    String newProduct(ProductDto dto);
+    ProductIdDto newProduct(ProductDto dto);
 
     ProductDto getProduct(String id);
 

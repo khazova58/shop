@@ -4,6 +4,7 @@ import com.shop.exception.BusinessError;
 import com.shop.exception.ServiceException;
 import com.shop.mapper.ProjectMapper;
 import com.shop.model.dto.ProductDto;
+import com.shop.model.dto.ProductIdDto;
 import com.shop.model.entity.Product;
 import com.shop.repository.ProductRepository;
 import com.shop.service.contract.ProductContract;
@@ -28,12 +29,12 @@ public class ProductService implements ProductContract {
 
     @Override
     @Transactional
-    public String newProduct(ProductDto dto) {
+    public ProductIdDto newProduct(ProductDto dto) {
         log.debug("Creating a new product: {}", dto);
         Product entity = mapper.mapToEntity(dto);
         Product savedProduct = repository.save(entity);
         log.debug("New product created with ID: {}", savedProduct.getProductId());
-        return savedProduct.getProductId();
+        return new ProductIdDto(savedProduct.getProductId());
     }
 
     @Override

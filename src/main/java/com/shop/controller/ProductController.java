@@ -1,5 +1,6 @@
 package com.shop.controller;
 
+import com.shop.model.dto.ProductIdDto;
 import com.shop.model.dto.ProductDto;
 import com.shop.service.contract.ProductContract;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,37 +28,38 @@ public class ProductController {
     @PostMapping
     @Operation(summary = "Добавить новый товар")
     @ResponseStatus(HttpStatus.CREATED)
-    public String newProduct(@Valid @RequestBody ProductDto dto) {
+    public ProductIdDto newProduct(@Valid @RequestBody ProductDto dto) {
         log.info("Создание нового товара: {}", dto);
         return service.newProduct(dto);
     }
 
-    @GetMapping
+    @GetMapping("/{productId}")
     @Operation(summary = "Найти товар по id")
-    public ProductDto getProduct(@RequestParam String id) {
-        log.info("Поиск товара с id {}", id);
-        return service.getProduct(id);
+    public ProductDto getProduct(@PathVariable(name = "productId") String productId) {
+        log.info("Поиск товара с id {}", productId);
+        return service.getProduct(productId);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     @Operation(summary = "Все товары")
     public List<ProductDto> allProducts() {
         log.info("Получение списка всех товаров из базы данных");
         return service.allProducts();
     }
 
-    @PutMapping
+    @PutMapping("/{productId}")
     @Operation(summary = "Обновить товар с заданным id")
-    public ProductDto updateProduct(@RequestParam String id,
+    public ProductDto updateProduct(@PathVariable(name = "productId") String productId,
                                     @Valid @RequestBody ProductDto dto) {
-        log.info("Изменение карточки товара с id {}", id);
-        return service.updateProduct(id, dto);
+        log.info("Изменение карточки товара с id {}", productId);
+        return service.updateProduct(productId, dto);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{productId}")
     @Operation(summary = "Удалить товар с заданным id")
-    public void deleteProduct(@RequestParam String id) {
-        log.info("Удаление товара с id {}", id);
-        service.deleteProduct(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable(name = "productId") String productId) {
+        log.info("Удаление товара с id {}", productId);
+        service.deleteProduct(productId);
     }
 }

@@ -34,8 +34,7 @@ class BasketControllerTest {
     void newBasket() throws Exception {
         Mockito.when(service.newBasket()).thenReturn(basketDto);
 
-        mockMvc.perform(
-                        post("/api/v1/baskets"))
+        mockMvc.perform(post("/api/v1/baskets"))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.basketId").value(basketDto.getBasketId()));

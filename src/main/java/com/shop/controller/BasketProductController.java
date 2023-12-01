@@ -16,33 +16,34 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "api/v1/baskets/buy")
+@RequestMapping(value = "api/v1/baskets")
 @Tag(name = "Работа с корзиной")
 @RequiredArgsConstructor
-public class BuyController {
+public class BasketProductController {
 
     private final BasketProductService service;
 
-    @PostMapping
+    @PostMapping("/{basketId}/products/{productId}")
     @Operation(summary = "Положить товар в корзину")
     @ResponseStatus(HttpStatus.CREATED)
-    public void putProducts(@RequestParam String basketId,
-                            @RequestParam String productId) {
+    public void putProducts(@PathVariable(name = "basketId") String basketId,
+                            @PathVariable(name = "productId") String productId) {
         log.info("Добавление в корзину {} товара с id {}", basketId, productId);
         service.putProduct(basketId, productId);
     }
 
-    @GetMapping
+    @GetMapping("/{basketId}/products")
     @Operation(summary = "Показать все товары из корзины")
-    public List<ProductDto> getProducts(@RequestParam String basketId) {
+    public List<ProductDto> getProducts(@PathVariable(name = "basketId") String basketId) {
         log.info("Список всех товаров из корзины с id {}", basketId);
         return service.allProducts(basketId);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{basketId}/products/{productId}")
     @Operation(summary = "Удалить товар из корзины")
-    public void deleteProduct(@RequestParam String basketId,
-                              @RequestParam String productId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable(name = "basketId") String basketId,
+                              @PathVariable(name = "productId") String productId) {
         log.info("Удаление из корзины {} товара с id {}", basketId, productId);
         service.deleteProduct(basketId, productId);
     }

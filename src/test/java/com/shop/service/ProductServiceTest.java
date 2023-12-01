@@ -4,6 +4,7 @@ import com.shop.exception.ServiceException;
 import com.shop.mapper.ProjectMapper;
 import com.shop.mapper.ProjectMapperImpl;
 import com.shop.model.dto.ProductDto;
+import com.shop.model.dto.ProductIdDto;
 import com.shop.model.entity.Product;
 import com.shop.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,9 +46,9 @@ class ProductServiceTest {
     void newProduct() {
         Mockito.when(repository.save(any())).thenReturn(product);
 
-        String id = sut.newProduct(dto);
+        ProductIdDto productIdDto = sut.newProduct(dto);
 
-        assertFalse(id.isEmpty());
+        assertFalse(productIdDto.productId().isEmpty());
         Mockito.verify(repository).save(any());
     }
 

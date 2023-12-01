@@ -1,6 +1,7 @@
 package com.shop.controller;
 
 import com.shop.model.dto.ProductDto;
+import com.shop.model.dto.ProductIdDto;
 import com.shop.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class ProductControllerTest {
     @Test
     @DisplayName("Создание товара")
     void newProduct() throws Exception {
-        Mockito.when(service.newProduct(dto)).thenReturn("testId");
+        Mockito.when(service.newProduct(dto)).thenReturn(new ProductIdDto("productId"));
 
         mockMvc.perform(post("/api/v1/products")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -47,16 +48,16 @@ class ProductControllerTest {
                                 }
                                 """))
                 .andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.productId").value("productId"));
     }
 
     @Test
-    @DisplayName("Найти товар по id")
+    @DisplayName("Найти товар по productId")
     void getProduct() throws Exception {
-        Mockito.when(service.getProduct("testId")).thenReturn(dto);
+        Mockito.when(service.getProduct("productId")).thenReturn(dto);
 
-        mockMvc.perform(get("/api/v1/products")
-                        .param("id", "testId"))
+        mockMvc.perform(get("/api/v1/products/{productId}", "productId"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Potato"));
@@ -69,8 +70,7 @@ class ProductControllerTest {
         list.add(dto);
         Mockito.when(service.allProducts()).thenReturn(list);
 
-        MvcResult actual = mockMvc.perform(
-                        get("/api/v1/products/all"))
+        MvcResult actual = mockMvc.perform(get("/api/v1/products"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -81,19 +81,17 @@ class ProductControllerTest {
     @Test
     @DisplayName("Обновить карточку товара")
     void updateProduct() throws Exception {
-        Mockito.when(service.updateProduct("testId", dto)).thenReturn(dto);
+        Mockito.when(service.updateProduct("productId", dto)).thenReturn(dto);
 
-        mockMvc.perform(
-                        put("/api/v1/products")
-                                .param("id", "testId")
-                                .content("""
-                                        {
-                                        	"title": "Potato",
-                                        	"description": "red potato",
-                                        	"price": 35.50
-                                        }
-                                        """)
-                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        mockMvc.perform(put("/api/v1/products/{productId}", "productId")
+                        .content("""
+                                {
+                                	"title": "Potato",
+                                	"description": "red potato",
+                                	"price": 35.50
+                                }
+                                """)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.price").value(35.50));
@@ -103,9 +101,7 @@ class ProductControllerTest {
     @DisplayName("Удаление карточки товара")
     void deleteProduct() throws Exception {
         Mockito.doNothing().when(service).deleteProduct("testId");
-        mockMvc.perform(
-                        delete("/api/v1/products")
-                                .param("id", "testId"))
+        mockMvc.perform(delete("/api/v1/products/{productId}", "productId"))
                 .andExpect(status().isNoContent());
     }
 }
