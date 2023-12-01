@@ -1,5 +1,7 @@
 package com.shop.service;
 
+import com.shop.exception.BusinessError;
+import com.shop.exception.ServiceException;
 import com.shop.service.contract.BasketContract;
 import com.shop.mapper.ProjectMapper;
 import com.shop.model.dto.BasketDto;
@@ -37,7 +39,7 @@ public class BasketService implements BasketContract {
      */
     @Override
     public void deleteBasket(String id) {
-        Basket found = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        Basket found = repository.findById(id).orElseThrow(() -> new ServiceException(BusinessError.BASKET_NOT_FOUND, id));
         repository.delete(found);
     }
 }

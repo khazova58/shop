@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Сервис для работы с товарами
+ */
 @Slf4j
 @Service
 @Transactional(readOnly = true)
@@ -27,6 +30,11 @@ public class ProductService implements ProductContract {
         this.mapper = mapper;
     }
 
+    /**
+     * Создать карточку товара
+     * @param dto сущность из запроса
+     * @return id нового товара
+     */
     @Override
     @Transactional
     public ProductIdDto newProduct(ProductDto dto) {
@@ -37,16 +45,24 @@ public class ProductService implements ProductContract {
         return new ProductIdDto(savedProduct.getProductId());
     }
 
+    /**
+     * Найти товар по id
+     * @param id товара
+     * @return найденный товар с полями: Название, Описание, Цена за единицу
+     */
     @Override
     public ProductDto getProduct(String id) {
         log.debug("Fetching product with ID: {}", id);
-        Product found = repository.findById(id)
-                .orElseThrow(() -> new ServiceException(BusinessError.PRODUCT_NOT_FOUND, id));
+        Product found = repository.findById(id).orElseThrow(() -> new ServiceException(BusinessError.PRODUCT_NOT_FOUND, id));
         ProductDto productDto = mapper.mapToDto(found);
         log.debug("Found product: {}", productDto);
         return productDto;
     }
 
+    /**
+     * Получить список всех товаров
+     * @return список товаров в базе данных
+     */
     @Override
     public List<ProductDto> allProducts() {
         log.debug("Fetching all products");
@@ -58,6 +74,12 @@ public class ProductService implements ProductContract {
         return dtoList;
     }
 
+    /**
+     * Обновить карточку товара по id
+     * @param id товра
+     * @param newProduct новые данные
+     * @return товар с полями: Название, Описание, Цена за единицу
+     */
     @Override
     @Transactional
     public ProductDto updateProduct(String id, ProductDto newProduct) {
@@ -69,6 +91,10 @@ public class ProductService implements ProductContract {
         return updatedProductDto;
     }
 
+    /**
+     * Удаление товара с заданным id из базы данных
+     * @param id товара
+     */
     @Override
     @Transactional
     public void deleteProduct(String id) {

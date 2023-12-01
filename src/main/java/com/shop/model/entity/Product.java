@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * Товар
@@ -15,6 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
 public class Product {
     /**
      * Идентификатор
@@ -41,4 +43,11 @@ public class Product {
      */
     @Column(name = "price")
     private double price;
+
+    @Override
+    public String toString() {
+        return "Название='" + title + '\'' +
+                ", Описание='" + description + '\'' +
+                ", Цена за ед.=" + price;
+    }
 }

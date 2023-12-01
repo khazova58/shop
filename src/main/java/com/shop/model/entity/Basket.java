@@ -1,7 +1,7 @@
 package com.shop.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -13,7 +13,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "basket")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Basket {
     /**
      * Идентификатор
@@ -30,6 +33,9 @@ public class Basket {
     @CreationTimestamp
     private LocalDateTime dateCreation;
 
+    /**
+     * Продукты в составе корзины
+     */
     @ManyToMany
     @JoinTable(name = "basket_product",
             joinColumns = @JoinColumn(name = "basket_id"),
