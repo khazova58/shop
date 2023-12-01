@@ -1,5 +1,7 @@
 package com.shop.service;
 
+import com.shop.exception.BusinessError;
+import com.shop.exception.ServiceException;
 import com.shop.mapper.ProjectMapper;
 import com.shop.model.dto.ProductDto;
 import com.shop.model.entity.Product;
@@ -32,7 +34,7 @@ public class ProductService implements ProductContract {
 
     @Override
     public ProductDto getProduct(String id) {
-        Product found = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));//TODO реализовать бизнес-ошибку
+        Product found = repository.findById(id).orElseThrow(() -> new ServiceException(BusinessError.PRODUCT_NOT_FOUND, id));
         return mapper.mapToDto(found);
     }
 
@@ -47,7 +49,7 @@ public class ProductService implements ProductContract {
     @Override
     @Transactional
     public ProductDto updateProduct(String id, ProductDto newProduct) {
-        Product foundProduct = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));//TODO реализовать бизнес-ошибку
+        Product foundProduct = repository.findById(id).orElseThrow(() -> new ServiceException(BusinessError.PRODUCT_NOT_FOUND, id));
         Product updateEntity = mapper.updateProductByRequest(newProduct, foundProduct);
         return mapper.mapToDto(updateEntity);
     }
@@ -55,7 +57,7 @@ public class ProductService implements ProductContract {
     @Override
     @Transactional
     public void deleteProduct(String id) {
-        Product found = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));//TODO реализовать бизнес-ошибку
+        Product found = repository.findById(id).orElseThrow(() -> new ServiceException(BusinessError.PRODUCT_NOT_FOUND, id));
         repository.delete(found);
     }
 }

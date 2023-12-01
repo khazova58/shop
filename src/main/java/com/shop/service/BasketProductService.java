@@ -1,5 +1,7 @@
 package com.shop.service;
 
+import com.shop.exception.BusinessError;
+import com.shop.exception.ServiceException;
 import com.shop.service.contract.BasketProductContract;
 import com.shop.mapper.ProjectMapper;
 import com.shop.model.dto.ProductDto;
@@ -26,14 +28,14 @@ public class BasketProductService implements BasketProductContract {
     /**
      * Положить товар в корзину
      *
-     * @param basketId  id корзины
-     * @param productId id товара
+     * @param basketId - id корзины
+     * @param productId - id товара
      */
     @Override
     @Transactional
     public void putProduct(String basketId, String productId) {
-        Basket basket = basketRepository.findById(basketId).orElseThrow(() -> new RuntimeException("Not found"));//TODO
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Not found"));//TODO
+        Basket basket = basketRepository.findById(basketId).orElseThrow(() -> new ServiceException(BusinessError.BASKET_NOT_FOUND, basketId));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ServiceException(BusinessError.PRODUCT_NOT_FOUND, productId));
         List<Product> list = basket.getProducts();
         list.add(product);
         basket.setProducts(list);
@@ -43,12 +45,12 @@ public class BasketProductService implements BasketProductContract {
     /**
      * Получить все товары из корзины
      *
-     * @param id id корзины
+     * @param id корзины
      * @return список товаров
      */
     @Override
     public List<ProductDto> allProducts(String id) {
-        Basket foundedBasket = basketRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));//TODO
+        Basket foundedBasket = basketRepository.findById(id).orElseThrow(() -> new ServiceException(BusinessError.BASKET_NOT_FOUND, id));
         List<Product> products = foundedBasket.getProducts();
         return products.stream()
                 .map(mapper::mapToDto)
@@ -58,14 +60,14 @@ public class BasketProductService implements BasketProductContract {
     /**
      * Удаление товара из корзины
      *
-     * @param basketId  id корзины
-     * @param productId id товара
+     * @param basketId - id корзины
+     * @param productId - id товара
      */
     @Override
     @Transactional
     public void deleteProduct(String basketId, String productId) {
-        Basket foundedBasket = basketRepository.findById(basketId).orElseThrow(() -> new RuntimeException("Not found"));//TODO
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Not found"));//TODO
+        Basket foundedBasket = basketRepository.findById(basketId).orElseThrow(() -> new ServiceException(BusinessError.BASKET_NOT_FOUND, basketId));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ServiceException(BusinessError.PRODUCT_NOT_FOUND, productId));
         List<Product> products = foundedBasket.getProducts();
         products.remove(product);
     }

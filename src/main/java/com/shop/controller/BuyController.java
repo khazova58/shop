@@ -30,7 +30,7 @@ public class BuyController {
 
     @GetMapping
     @Operation(summary = "Показать все товары из корзины")
-    public List<ProductDto> getProducts(String id) {
+    public List<ProductDto> getProducts(@RequestParam String id) {
         return service.allProducts(id);
     }
 
