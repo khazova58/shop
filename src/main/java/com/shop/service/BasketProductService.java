@@ -34,7 +34,7 @@ public class BasketProductService implements BasketProductContract {
     @Override
     @Transactional
     public void putProduct(String basketId, String productId) {
-        Basket basket = basketRepository.findById(basketId).orElseThrow(() -> new ServiceException(BusinessError.BASKET_NOT_FOUND, basketId));
+        Basket basket = basketRepository.findByBasketId(basketId).orElseThrow(() -> new ServiceException(BusinessError.BASKET_NOT_FOUND, basketId));
         Product product = productRepository.findById(productId).orElseThrow(() -> new ServiceException(BusinessError.PRODUCT_NOT_FOUND, productId));
         List<Product> list = basket.getProducts();
         list.add(product);

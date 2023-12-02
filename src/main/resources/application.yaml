@@ -17,6 +17,7 @@ spring:
       hibernate:
         show_sql: true
         default_schema: shopping
+        format_sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 logging:
   level:
