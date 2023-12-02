@@ -1,20 +1,27 @@
 server:
-  port: 8081
+  port: 8083
 spring:
+  liquibase:
+    enabled: true
+    liquibase-schema: shopping
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:file:./.h2/shop;AUTO_SERVER=true;INIT=CREATE SCHEMA IF NOT EXISTS shopping;
-    username: admin
-    password: root
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   h2:
     console:
       enabled: true
       path: /h2
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
         show_sql: true
-#        default_schema: list
+        default_schema: shopping
+        format_sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+logging:
+  level:
+    com.shop: info
