@@ -52,7 +52,7 @@ class BasketProductServiceTest {
     @Test
     @DisplayName("Положить товар в корзину")
     void putProduct() {
-        Mockito.when(basketRepository.findById("testId")).thenReturn(Optional.of(basket));
+        Mockito.when(basketRepository.findByBasketId("testId")).thenReturn(Optional.of(basket));
         Mockito.when(productRepository.findById("testId")).thenReturn(Optional.of(product));
         Mockito.when(basketRepository.save(basket)).thenReturn(basket);
         sut.putProduct("testId", "testId");
@@ -76,7 +76,7 @@ class BasketProductServiceTest {
         Mockito.when(basketRepository.findById("testId")).thenReturn(Optional.of(basket));
         Mockito.when(productRepository.findById("testId")).thenReturn(Optional.of(product));
 
-        sut.deleteProduct("testId","testId");
+        sut.deleteProduct("testId", "testId");
 
         Mockito.verify(basketRepository).save(basket);
     }

@@ -32,7 +32,7 @@ public class BasketController {
     @DeleteMapping
     @Operation(summary = "Удалить корзину пользователя")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBasket(@RequestParam String id) {
+    public void deleteBasket(@RequestParam(name = "id") String id) {
         log.info("Удаление корзины с id {}", id);
         service.deleteBasket(id);
     }
