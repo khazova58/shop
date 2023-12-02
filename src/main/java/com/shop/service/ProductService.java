@@ -9,6 +9,8 @@ import com.shop.model.entity.Product;
 import com.shop.repository.ProductRepository;
 import com.shop.service.contract.ProductContract;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,9 +66,9 @@ public class ProductService implements ProductContract {
      * @return список товаров в базе данных
      */
     @Override
-    public List<ProductDto> allProducts() {
+    public List<ProductDto> allProducts(Pageable pageable) {
         log.debug("Fetching all products");
-        List<Product> products = repository.findAll();
+        Page<Product> products = repository.findAll(pageable);
         List<ProductDto> dtoList = products.stream()
                 .map(mapper::mapToDto)
                 .toList();

@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -68,7 +69,7 @@ class ProductControllerTest {
     void allProducts() throws Exception {
         ArrayList<ProductDto> list = new ArrayList<>();
         list.add(dto);
-        Mockito.when(service.allProducts()).thenReturn(list);
+        Mockito.when(service.allProducts(any())).thenReturn(list);
 
         MvcResult actual = mockMvc.perform(get("/api/v1/products"))
                 .andDo(print())

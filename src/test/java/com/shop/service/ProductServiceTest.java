@@ -14,6 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,9 +80,10 @@ class ProductServiceTest {
     void allProducts() {
         List<Product> list = new ArrayList<>();
         list.add(product);
-        Mockito.when(repository.findAll()).thenReturn(list);
+        PageImpl<Product> page = new PageImpl<>(list);
+        Mockito.when(repository.findAll(any(Pageable.class))).thenReturn(page);
 
-        List<ProductDto> dtoList = sut.allProducts();
+        List<ProductDto> dtoList = sut.allProducts(PageRequest.ofSize(1));
 
         assertEquals(list.size(), dtoList.size());
         assertEquals(list.get(0).getTitle(), dtoList.get(0).getTitle());

@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,9 +44,9 @@ public class ProductController {
 
     @GetMapping
     @Operation(summary = "Все товары")
-    public List<ProductDto> allProducts() {
+    public List<ProductDto> allProducts(@ParameterObject Pageable pageable) {
         log.info("Получение списка всех товаров из базы данных");
-        return service.allProducts();
+        return service.allProducts(pageable);
     }
 
     @PutMapping("/{productId}")
