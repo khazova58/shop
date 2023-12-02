@@ -1,0 +1,11 @@
+databaseChangeLog:
+  #Схема
+  - include:
+      file: db/changelog/create-schema-shopping.sql
+  #Таблицы
+  - include:
+      file: db/changelog/create-table-basket.sql
+  - include:
+      file: db/changelog/create-table-product.sql
+  - include:
+      file: db/changelog/create-table-basket_product.sql
