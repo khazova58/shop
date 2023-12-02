@@ -35,7 +35,7 @@
 
 ### API Documentation
 
-Документация API доступна по адресу http://localhost:8083/swagger-ui.html и http://localhost:8083/v3/api-docs.
+Документация API доступна по адресу http://localhost:8083/swagger-ui/index.html и http://localhost:8083/v3/api-docs.
 
 ### Структура проекта
 
